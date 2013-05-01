@@ -1,0 +1,24 @@
+{
+	"name": "tarmac",
+	"version": "0.0.0",
+	"description": "Tiny and unopinionated AMD MVC JavaScript library.",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Wolfy87/tarmac.git"
+	},
+	"keywords": [
+		"JavaScript",
+		"AMD",
+		"MVC"
+	],
+	"author": {
+		"name": "Oliver Caldwell",
+		"email": "olliec87@gmail.com",
+		"url": "http://oli.me.uk/"
+	},
+	"license": {
+		"type": "MIT",
+		"url": "http://opensource.org/licenses/MIT"
+	},
+	"readmeFilename": "README.md"
+}
