@@ -20,5 +20,9 @@
 		"type": "MIT",
 		"url": "http://opensource.org/licenses/MIT"
 	},
-	"readmeFilename": "README.md"
+	"readmeFilename": "README.md",
+	"devDependencies": {
+		"chai": "*",
+		"mocha": "*"
+	}
 }
