@@ -15,6 +15,11 @@ define([
 	assert = chai.assert;
 
 	require([
+		'specs/Controller',
+		'specs/Model',
+		'specs/Router',
+		'specs/Storage',
+		'specs/View'
 	], function() {
 		mocha.run();
 	});
