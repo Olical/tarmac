@@ -2,6 +2,10 @@
 
 Tiny and unopinionated AMD MVC JavaScript library.
 
+## Tests
+
+You can run the tests by starting the server (`./scripts/server.sh`) and navigating to `http://localhost:8000/tests/`.
+
 ## License (MIT)
 
 Copyright (c) 2013 Oliver Caldwell
