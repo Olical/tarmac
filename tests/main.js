@@ -16,15 +16,14 @@ define([
 	assert = chai.assert;
 
 	require([
-		'specs/utils/blend',
-
-		'specs/mixins/Events',
-
 		'specs/Controller',
 		'specs/Model',
 		'specs/Router',
 		'specs/Storage',
-		'specs/View'
+		'specs/View',
+
+		'specs/mixin',
+		'specs/mixins/Events'
 	], function() {
 		mocha.run();
 	});
