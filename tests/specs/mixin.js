@@ -1,19 +1,8 @@
 define([
-	'tarmac/utils/blend'
-], function(blend) {
-	suite('tarmac/utils/blend', function() {
-		test('returns cloned objects', function() {
-			var original = {
-				foo: true
-			};
-			var blended = blend(original);
-
-			blended.bar = true;
-
-			assert.isUndefined(original.bar, 'does not add bar to original');
-		});
-
-		test('returns all properties from both inputs', function() {
+	'tarmac/mixin'
+], function(mixin) {
+	suite('tarmac/mixin', function() {
+		test('mixis in all properties from all inputs', function() {
 			var a = {
 				foo: 100,
 				bar: 200
@@ -22,12 +11,13 @@ define([
 				baz: 300,
 				extra: 400
 			};
-			var blended = blend(a, b);
+			var mixed = {};
+			mixin(mixed, a, b);
 
-			assert.strictEqual(blended.foo, a.foo);
-			assert.strictEqual(blended.bar, a.bar);
-			assert.strictEqual(blended.baz, b.baz);
-			assert.strictEqual(blended.extra, b.extra);
+			assert.strictEqual(mixed.foo, a.foo);
+			assert.strictEqual(mixed.bar, a.bar);
+			assert.strictEqual(mixed.baz, b.baz);
+			assert.strictEqual(mixed.extra, b.extra);
 		});
 
 		test('leftmost takes precedence', function() {
@@ -43,11 +33,12 @@ define([
 				bar: 'c-bar',
 				baz: 'c-baz'
 			};
-			var blended = blend(a, b, c);
+			var mixed = {};
+			mixin(mixed, a, b, c);
 
-			assert.strictEqual(blended.foo, a.foo);
-			assert.strictEqual(blended.bar, b.bar);
-			assert.strictEqual(blended.baz, c.baz);
+			assert.strictEqual(mixed.foo, a.foo);
+			assert.strictEqual(mixed.bar, b.bar);
+			assert.strictEqual(mixed.baz, c.baz);
 		});
 	});
 });

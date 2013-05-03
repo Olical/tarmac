@@ -1,27 +1,24 @@
 define(function() {
 	/**
-	 * Blends N objects together and returns a new one containing all of their
-	 * properties. The leftmost object will take precedence. This is a shallow
-	 * merge, it will not recurse into sub-objects.
+	 * Mixes all passed objects into the leftmost object. The leftmost objects
+	 * have higher precedence and will overwrite values set by the leftmost
+	 * objects. This is a shallow merge, it will not recurse into sub-objects.
 	 *
+	 * @param {Object} target Destination object for all other objects values.
 	 * @param {...Object}
-	 * @return {Object} Blended object created from provided arguments.
 	 */
-	function blend() {
-		var result = {};
+	function mixin(target) {
 		var i = arguments.length;
 		var key;
 
-		while (i--) {
+		while (--i) {
 			for (key in arguments[i]) {
 				if (arguments[i].hasOwnProperty(key)) {
-					result[key] = arguments[i][key];
+					target[key] = arguments[i][key];
 				}
 			}
 		}
-
-		return result;
 	}
 
-	return blend;
+	return mixin;
 });
