@@ -69,6 +69,17 @@ define([
 				};
 				assert.deepEqual(this.SpyController.prototype.execute.args[0][1], request);
 			});
+
+			test('context is passed to the controller', function() {
+				var route = '/users/:id/:slug/';
+				var targetContext = {
+					foo: true
+				};
+				this.router.addRoute(route, this.SpyController);
+				this.router.setContextObject(targetContext);
+				this.router.route('/users/100/oliver-caldwell/');
+				assert.strictEqual(this.SpyController.prototype.execute.args[0][2], targetContext);
+			});
 		});
 
 		suite('getContextObject', function() {
@@ -86,17 +97,6 @@ define([
 				this.router.setContextObject(targetContext);
 				var context = this.router.getContextObject();
 				assert.strictEqual(context, targetContext);
-			});
-
-			test('context is passed to the controller', function() {
-				var route = '/users/:id/:slug/';
-				var targetContext = {
-					foo: true
-				};
-				this.router.addRoute(route, this.SpyController);
-				this.router.setContextObject(targetContext);
-				this.router.route('/users/100/oliver-caldwell/');
-				assert.strictEqual(this.SpyController.prototype.execute.args[0][2], targetContext);
 			});
 		});
 	});
