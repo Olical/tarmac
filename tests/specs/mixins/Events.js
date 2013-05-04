@@ -145,7 +145,7 @@ define([
 
 				this.events.removeListener('test-event', testListener);
 
-				assert.isUndefined(events['test-event']);
+				assert.notProperty(events, 'test-event');
 			});
 		});
 
