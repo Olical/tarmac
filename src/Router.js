@@ -31,8 +31,10 @@ define(function() {
 	 */
 	Router.prototype.addRoute = function(route, controller, action) {
 		var routes = this.getRoutes();
+		var compiledRoute = this._compileRoute(route);
 		routes[route] = {
-			route: this._compileRoute(route),
+			route: compiledRoute.regex,
+			keys: compiledRoute.keys,
 			controller: controller,
 			action: action
 		};
@@ -41,18 +43,29 @@ define(function() {
 	};
 
 	/**
-	 * Builds a regular expression from the provided route.
+	 * Builds a regular expression from the provided route. Returns an object
+	 * containing the RegExp instance and an array of keys and the order they
+	 * were found in.
 	 *
 	 * @param {String} route
-	 * @return {RegExp} The built RegExp to match the route.
+	 * @return {Object} The built RegExp to match the route under "regex" and the keys under "keys".
 	 * @private
 	 */
 	Router.prototype._compileRoute = function(route) {
+		var keys = [];
 		var validRouteSegment = '([a-zA-Z0-9_-]+)';
 		var routeSegmentRegExp = new RegExp(':' + validRouteSegment, 'g');
-		var routeRegExpSource = route.replace(routeSegmentRegExp, validRouteSegment);
-		var routeRegExp = new RegExp('^' + routeRegExpSource + '$');
-		return routeRegExp;
+
+		var routeRegExpSource = route.replace(routeSegmentRegExp, function(match, key) {
+			keys.push(key);
+			return validRouteSegment;
+		});
+
+		var routeRegExp = new RegExp('^' + routeRegExpSource + '$', 'g');
+		return {
+			keys: keys,
+			regex: routeRegExp
+		};
 	};
 
 	/**
@@ -86,7 +99,7 @@ define(function() {
 			if (routes.hasOwnProperty(key) && routes[key].route.test(route)) {
 				selectedRoute = routes[key];
 				controller = new selectedRoute.controller();
-				request = this._buildRequestObject(key, route);
+				request = this._buildRequestObject(route, selectedRoute.route, selectedRoute.keys);
 				controller.execute(selectedRoute.action, request, context);
 				break;
 			}
@@ -96,15 +109,28 @@ define(function() {
 	};
 
 	/**
-	 * Builds the request object from a route source string and a matching URL.
+	 * Builds the request object from a route RegExp and a matching URL.
 	 *
-	 * @param {String} routeSource Original route. (/users/:id/)
 	 * @param {String} route Matched route. (/users/123/)
+	 * @param {String} routeRegExp Route RegExp to parse the route.
+	 * @param {String[]} keys The keys in the order they are found in the route RegExp.
 	 * @return {Object} Data extracted from the URL mapped to the correct keys.
 	 * @private
 	 */
-	Router.prototype._buildRequestObject = function() {
-		return {};
+	Router.prototype._buildRequestObject = function(route, routeRegExp, keys) {
+		var result = {};
+		var argumentsArray;
+		var values;
+		var i;
+		route.replace(routeRegExp, function(match, value) {
+			argumentsArray = Array.prototype.slice.call(arguments, 0);
+			values = argumentsArray.slice(1, -2);
+			i = values.length;
+			while (i--) {
+				result[keys[i]] = values[i];
+			}
+		});
+		return result;
 	};
 
 	/**

@@ -58,6 +58,17 @@ define([
 				this.router.route('/users/100/oliver-caldwell/');
 				assert.isTrue(this.SpyController.prototype.execute.called);
 			});
+
+			test('routes through to a controller and passes the correct request values', function() {
+				var route = '/users/:id/:slug/';
+				this.router.addRoute(route, this.SpyController);
+				this.router.route('/users/100/oliver-caldwell/');
+				var request = {
+					id: '100',
+					slug: 'oliver-caldwell'
+				};
+				assert.deepEqual(this.SpyController.prototype.execute.args[0][1], request);
+			});
 		});
 
 		suite('getContextObject', function(){});
