@@ -15,5 +15,11 @@ define({
 		}
 
 		return events[eventName];
+	},
+
+	addListener: function(eventName, listener) {
+		var listeners = this.getListeners(eventName);
+		listeners.push(listener);
+		return this;
 	}
 });
