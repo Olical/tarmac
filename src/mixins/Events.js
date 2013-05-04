@@ -1,4 +1,11 @@
 define({
+	/**
+	 * Fetches the events object for this instance. The events object contains
+	 * all of the listener arrays for all registered events. This is a real
+	 * reference to the original object.
+	 *
+	 * @returns {Object} All of the events and their listeners.
+	 */
 	getEvents: function() {
 		if (typeof this._events === 'undefined') {
 			this._events = {};
@@ -7,6 +14,13 @@ define({
 		return this._events;
 	},
 
+	/**
+	 * Fetches the listeners array for a specific event. This is a real
+	 * reference to the original array.
+	 *
+	 * @param {String} eventName Name of the event you want the listeners for.
+	 * @return {Function[]} All listeners for the specified event.
+	 */
 	getListeners: function(eventName) {
 		var events = this.getEvents();
 
@@ -17,6 +31,13 @@ define({
 		return events[eventName];
 	},
 
+	/**
+	 * Adds a listener to the specified event.
+	 *
+	 * @param {String} eventName Target event.
+	 * @param {Function} listener Listener function to add.
+	 * @return {Object} The current instance to allow chaining.
+	 */
 	addListener: function(eventName, listener) {
 		var listeners = this.getListeners(eventName);
 		listeners.push(listener);
