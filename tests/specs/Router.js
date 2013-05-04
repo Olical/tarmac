@@ -71,7 +71,33 @@ define([
 			});
 		});
 
-		suite('getContextObject', function(){});
-		suite('setContextObject', function(){});
+		suite('getContextObject', function() {
+			test('fetches an empty context object', function() {
+				var context = this.router.getContextObject();
+				assert.deepEqual(context, {});
+			});
+		});
+
+		suite('setContextObject', function() {
+			test('can set the context object', function() {
+				var targetContext = {
+					foo: true
+				};
+				this.router.setContextObject(targetContext);
+				var context = this.router.getContextObject();
+				assert.strictEqual(context, targetContext);
+			});
+
+			test('context is passed to the controller', function() {
+				var route = '/users/:id/:slug/';
+				var targetContext = {
+					foo: true
+				};
+				this.router.addRoute(route, this.SpyController);
+				this.router.setContextObject(targetContext);
+				this.router.route('/users/100/oliver-caldwell/');
+				assert.strictEqual(this.SpyController.prototype.execute.args[0][2], targetContext);
+			});
+		});
 	});
 });
