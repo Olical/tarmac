@@ -3,13 +3,11 @@ define([
 	'tarmac/Controller',
 	'sinon'
 ], function(Router, Controller) {
-	function SpyController() {
-		this.execute = sinon.spy();
-	}
-	SpyController.prototype = Object.create(Controller.prototype);
-
 	suite('tarmac/Router', function() {
 		setup(function() {
+			this.SpyController = function(){};
+			this.SpyController.prototype = Object.create(Controller.prototype);
+			this.SpyController.prototype.execute = sinon.spy();
 			this.router = new Router();
 		});
 
@@ -30,15 +28,15 @@ define([
 
 			test('routes are added with a controller and option', function() {
 				var route = '/users/:id/';
-				this.router.addRoute(route, SpyController, 'testing');
+				this.router.addRoute(route, this.SpyController, 'testing');
 				var routes = this.router.getRoutes();
 
-				assert.deepPropertyVal(routes, route + '.controller', SpyController);
+				assert.deepPropertyVal(routes, route + '.controller', this.SpyController);
 				assert.deepPropertyVal(routes, route + '.action', 'testing');
 			});
 
 			test('routes compile a RegExp that matches example routes', function() {
-				var route = '/users/:id/';
+				var route = '/users/:id/:slug/';
 				this.router.addRoute(route);
 				var routes = this.router.getRoutes();
 
@@ -46,11 +44,23 @@ define([
 
 				var routeRegExp = routes[route].route;
 
-				assert.isTrue(routeRegExp.test('/users/100/'));
-				assert.isFalse(routeRegExp.test('/users/100/extra/'));
-				assert.isFalse(routeRegExp.test('/users/100'));
-				assert.isFalse(routeRegExp.test('users/100/'));
+				assert.isTrue(routeRegExp.test('/users/100/oliver-caldwell/'));
+				assert.isFalse(routeRegExp.test('/users/100/oc/extra/'));
+				assert.isFalse(routeRegExp.test('/users/100/oc'));
+				assert.isFalse(routeRegExp.test('users/100/oc/'));
 			});
 		});
+
+		suite('route', function() {
+			test('routes through to a controller', function() {
+				var route = '/users/:id/:slug/';
+				this.router.addRoute(route, this.SpyController);
+				this.router.route('/users/100/oliver-caldwell/');
+				assert.isTrue(this.SpyController.prototype.execute.called);
+			});
+		});
+
+		suite('getContextObject', function(){});
+		suite('setContextObject', function(){});
 	});
 });

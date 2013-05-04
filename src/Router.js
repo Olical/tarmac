@@ -49,7 +49,7 @@ define(function() {
 	 */
 	Router.prototype._compileRoute = function(route) {
 		var validRouteSegment = '([a-zA-Z0-9_-]+)';
-		var routeSegmentRegExp = new RegExp(':' + validRouteSegment);
+		var routeSegmentRegExp = new RegExp(':' + validRouteSegment, 'g');
 		var routeRegExpSource = route.replace(routeSegmentRegExp, validRouteSegment);
 		var routeRegExp = new RegExp('^' + routeRegExpSource + '$');
 		return routeRegExp;
@@ -66,6 +66,70 @@ define(function() {
 		}
 
 		return this._routes;
+	};
+
+	/**
+	 * Routes the provided URL through to the correct controller.
+	 *
+	 * @param {String} route
+	 * @return {Object} The current instance to allow chaining.
+	 */
+	Router.prototype.route = function(route) {
+		var routes = this.getRoutes();
+		var context = this.getContextObject();
+		var key;
+		var selectedRoute;
+		var controller;
+		var request;
+
+		for (key in routes) {
+			if (routes.hasOwnProperty(key) && routes[key].route.test(route)) {
+				selectedRoute = routes[key];
+				controller = new selectedRoute.controller();
+				request = this._buildRequestObject(key, route);
+				controller.execute(selectedRoute.action, request, context);
+				break;
+			}
+		}
+
+		return this;
+	};
+
+	/**
+	 * Builds the request object from a route source string and a matching URL.
+	 *
+	 * @param {String} routeSource Original route. (/users/:id/)
+	 * @param {String} route Matched route. (/users/123/)
+	 * @return {Object} Data extracted from the URL mapped to the correct keys.
+	 * @private
+	 */
+	Router.prototype._buildRequestObject = function() {
+		return {};
+	};
+
+	/**
+	 * Fetches the current context object for this router. You can set this to
+	 * whatever you want using setContextObject. The object will be passed to
+	 * the controllers execute method.
+	 *
+	 * @return {Object}
+	 */
+	Router.prototype.getContextObject = function() {
+		if (typeof this._context === 'undefined') {
+			this._context = {};
+		}
+
+		return this._context;
+	};
+
+	/**
+	 * Sets the context object to the one that you specify. This object is passed to the controllers execute method when routing.
+	 *
+	 * @param {Object} context Your desired context object.
+	 * @return {Object} The current instance to allow chaining.
+	 */
+	Router.prototype.setContextObject = function(context) {
+		this._context = context;
 	};
 
 	return Router;
