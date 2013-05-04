@@ -1,6 +1,6 @@
 define(function() {
-	function NAME() {
+	function Router() {
 	}
 
-	return NAME;
+	return Router;
 });
