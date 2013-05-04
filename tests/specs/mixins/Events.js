@@ -1,6 +1,7 @@
 define([
 	'tarmac/mixins/Events',
-	'tarmac/mixin'
+	'tarmac/mixin',
+	'sinon'
 ], function(Events, mixin) {
 	function TestEvents(){}
 	mixin(TestEvents.prototype, Events);
@@ -145,6 +146,77 @@ define([
 				this.events.removeListener('test-event', testListener);
 
 				assert.isUndefined(events['test-event']);
+			});
+		});
+
+		suite('emitEvent', function() {
+			test('can emit an event with no listeners', function() {
+				assert.ok(this.events.emitEvent('test-event'));
+			});
+
+			test('emitting an event will call it\'s single listener', function() {
+				var testListener = sinon.spy();
+				this.events
+					.addListener('test-event', testListener)
+					.emitEvent('test-event');
+				assert.isTrue(testListener.called);
+			});
+
+			test('emitting an event will call all of it\'s listeners', function() {
+				var testListener = sinon.spy();
+				var otherTestListener = sinon.spy();
+
+				this.events
+					.addListener('test-event', testListener)
+					.addListener('test-event', otherTestListener)
+					.emitEvent('test-event');
+
+				assert.isTrue(testListener.called);
+				assert.isTrue(otherTestListener.called);
+			});
+
+			test('emitting an event will not call other events listeners', function() {
+				var testListener = sinon.spy();
+				var otherTestListener = sinon.spy();
+
+				this.events
+					.addListener('test-event', testListener)
+					.addListener('other-event', otherTestListener)
+					.emitEvent('test-event');
+
+				assert.isTrue(testListener.called);
+				assert.isFalse(otherTestListener.called);
+			});
+
+			test('emitting with arguments will pass the arguments to the listener', function() {
+				var testListener = sinon.spy();
+				this.events
+					.addListener('test-event', testListener)
+					.emitEvent('test-event', 'arg1', 'arg2')
+					.emitEvent('test-event', 100, 200);
+
+				assert.strictEqual(testListener.callCount, 2);
+				assert.deepEqual(testListener.args[0], ['arg1', 'arg2']);
+				assert.deepEqual(testListener.args[1], [100, 200]);
+			});
+
+			test('scope of listener is set to host instance by default', function() {
+				var testListener = sinon.spy();
+				this.events
+					.addListener('test-event', testListener)
+					.emitEvent('test-event');
+				assert.strictEqual(testListener.thisValues[0], this.events);
+			});
+
+			test('can set scope of listeners with bind', function() {
+				var testListener = sinon.spy();
+				var scopeObject = {
+					foo: true
+				};
+				this.events
+					.addListener('test-event', testListener.bind(scopeObject))
+					.emitEvent('test-event');
+				assert.strictEqual(testListener.thisValues[0], scopeObject);
 			});
 		});
 	});

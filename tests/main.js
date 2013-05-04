@@ -2,6 +2,7 @@ requirejs.config({
 	paths: {
 		chai: '../node_modules/chai/chai',
 		mocha: '../node_modules/mocha/mocha',
+		sinon: '../node_modules/sinon/pkg/sinon',
 		tarmac: '../src'
 	},
 	urlArgs: 'v=' + Date.now()

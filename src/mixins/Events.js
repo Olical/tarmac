@@ -69,5 +69,30 @@ define({
 		}
 
 		return this;
+	},
+
+	/**
+	 * Emits the specified event which executes all of the attached listeners.
+	 * The listeners will be passed any extra arguments you provide this method
+	 * other than the event name.
+	 *
+	 * The listeners are called with the scope of the host object that contains
+	 * the events and listeners.
+	 *
+	 * @param {String} eventName Target event.
+	 * @param {...*}
+	 * @return {Object} The current instance to allow chaining.
+	 */
+	emitEvent: function(eventName) {
+		var listeners = this.getListeners(eventName);
+		var argumentsArray = Array.prototype.slice.call(arguments, 0);
+		var listenerArguments = argumentsArray.slice(1);
+		var i = listeners.length;
+
+		while (i--) {
+			listeners[i].apply(this, listenerArguments);
+		}
+
+		return this;
 	}
 });
