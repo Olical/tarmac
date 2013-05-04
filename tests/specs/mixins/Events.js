@@ -88,5 +88,64 @@ define([
 				assert.strictEqual(listeners[0], testListener);
 			});
 		});
+
+		suite('removeListener', function() {
+			test('removing from an empty event is okay', function() {
+				function testListener(){}
+				assert.ok(this.events.removeListener('test-event', testListener));
+			});
+
+			test('can remove a listener', function() {
+				function testListener(){}
+				this.events.addListener('test-event', testListener);
+				var listeners = this.events.getListeners('test-event');
+
+				assert.isArray(listeners);
+				assert.lengthOf(listeners, 1);
+				assert.strictEqual(listeners[0], testListener);
+
+				this.events.removeListener('test-event', testListener);
+
+				assert.isArray(listeners);
+				assert.lengthOf(listeners, 0);
+			});
+
+			test('removing a listener leaves others intact', function() {
+				function testListener(){}
+				function otherTestListener(){}
+
+				this.events
+					.addListener('test-event', testListener)
+					.addListener('test-event', otherTestListener);
+
+				var listeners = this.events.getListeners('test-event');
+
+				assert.isArray(listeners);
+				assert.lengthOf(listeners, 2);
+				assert.strictEqual(listeners[0], testListener);
+				assert.strictEqual(listeners[1], otherTestListener);
+
+				this.events.removeListener('test-event', testListener);
+
+				assert.isArray(listeners);
+				assert.lengthOf(listeners, 1);
+				assert.strictEqual(listeners[0], otherTestListener);
+			});
+
+			test('removing the last listener deletes the array', function() {
+				function testListener(){}
+				this.events.addListener('test-event', testListener);
+				var listeners = this.events.getListeners('test-event');
+				var events = this.events.getEvents();
+
+				assert.isArray(listeners);
+				assert.lengthOf(listeners, 1);
+				assert.strictEqual(listeners[0], testListener);
+
+				this.events.removeListener('test-event', testListener);
+
+				assert.isUndefined(events['test-event']);
+			});
+		});
 	});
 });

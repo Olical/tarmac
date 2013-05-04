@@ -47,5 +47,27 @@ define({
 		}
 
 		return this;
+	},
+
+	/**
+	 * Removes a listener from an event.
+	 *
+	 * @param {String} eventName Target event.
+	 * @param {Function} listener Listener function to remove.
+	 * @return {Object} The current instance to allow chaining.
+	 */
+	removeListener: function(eventName, listener) {
+		var listeners = this.getListeners(eventName);
+		var listenerIndex = listeners.indexOf(listener);
+
+		if (listenerIndex !== -1) {
+			listeners.splice(listenerIndex, 1);
+		}
+
+		if (listeners.length === 0) {
+			delete this.getEvents()[eventName];
+		}
+
+		return this;
 	}
 });
