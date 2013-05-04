@@ -22,7 +22,7 @@ define(function() {
 	 * So calling execute with an action of "createUser" will
 	 * call this.createUserAction.
 	 *
-	 * @param {String|null} action Current action, if any.
+	 * @param {String|undefined} action Current action, if any.
 	 * @param {Object} request Contains values extracted from the URL.
 	 * @param {Object} context Object of information that can be passed down from the router.
 	 * @return {Object} The current instance to allow chaining.
