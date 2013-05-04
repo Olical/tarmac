@@ -32,7 +32,8 @@ define({
 	},
 
 	/**
-	 * Adds a listener to the specified event.
+	 * Adds a listener to the specified event. It will not add if there is
+	 * already an instance of this function inside the array.
 	 *
 	 * @param {String} eventName Target event.
 	 * @param {Function} listener Listener function to add.
@@ -40,7 +41,11 @@ define({
 	 */
 	addListener: function(eventName, listener) {
 		var listeners = this.getListeners(eventName);
-		listeners.push(listener);
+
+		if (listeners.indexOf(listener) === -1) {
+			listeners.push(listener);
+		}
+
 		return this;
 	}
 });
