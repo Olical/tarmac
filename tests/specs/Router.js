@@ -108,8 +108,23 @@ define([
 					id: 200,
 					slug: 'oliver-c'
 				});
-
 				assert.strictEqual(reversed, '/users/200/oliver-c/');
+			});
+
+			test('can reverse with one value', function() {
+				var route = '/users/:id/';
+				this.router.addRoute('test', route, this.SpyController);
+				var reversed = this.router.reverse('test', {
+					id: 200
+				});
+				assert.strictEqual(reversed, '/users/200/');
+			});
+
+			test('can reverse with just a name, no data', function() {
+				var route = '/users/';
+				this.router.addRoute('test', route, this.SpyController);
+				var reversed = this.router.reverse('test');
+				assert.strictEqual(reversed, '/users/');
 			});
 		});
 	});
