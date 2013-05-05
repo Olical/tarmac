@@ -27,16 +27,18 @@ define(function() {
 	 * @param {String} route URL to match with segments to extract denoted with a colon.
 	 * @param {Function} controller Controller class to map to, not a class instance, an actual class.
 	 * @param {String} action Optional action string to pass through to the controller.
+	 * @param {String} name The name of the route, can be used for reversing a URL.
 	 * @return {Object} The current instance to allow chaining.
 	 */
-	Router.prototype.addRoute = function(route, controller, action) {
+	Router.prototype.addRoute = function(route, controller, action, name) {
 		var routes = this.getRoutes();
 		var compiledRoute = this._compileRoute(route);
 		routes[route] = {
 			route: compiledRoute.regex,
 			keys: compiledRoute.keys,
 			controller: controller,
-			action: action
+			action: action,
+			name: name
 		};
 
 		return this;
