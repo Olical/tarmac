@@ -55,20 +55,33 @@ define(function() {
 	 */
 	Router.prototype._compileRoute = function(route) {
 		var keys = [];
-		var validRouteSegment = '([a-zA-Z0-9_-]+)';
-		var routeSegmentRegExp = new RegExp(':' + validRouteSegment, 'g');
-
-		var routeRegExpSource = route.replace(routeSegmentRegExp, function(match, key) {
+		var routeRegExpSource = route.replace(this._routeSegmentRegExp, function(match, key) {
 			keys.push(key);
-			return validRouteSegment;
-		});
-
+			return this._validRouteSegment;
+		}.bind(this));
 		var routeRegExp = new RegExp('^' + routeRegExpSource + '$', 'g');
+
 		return {
 			keys: keys,
 			regex: routeRegExp
 		};
 	};
+
+	/**
+	 * RegExp segment to match named keys in route URLs.
+	 *
+	 * @type {String}
+	 * @private
+	 */
+	Router.prototype._validRouteSegment = '([a-zA-Z0-9_-]+)';
+
+	/**
+	 * Compiled RegExp to match named keys in route URLs.
+	 *
+	 * @type {RegExp}
+	 * @private
+	 */
+	Router.prototype._routeSegmentRegExp = new RegExp(':' + Router.prototype._validRouteSegment, 'g');
 
 	/**
 	 * Fetches the routes object.
