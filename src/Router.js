@@ -158,6 +158,7 @@ define(function() {
 	 */
 	Router.prototype.setContextObject = function(context) {
 		this._context = context;
+		return this;
 	};
 
 	/**
