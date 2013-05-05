@@ -160,5 +160,16 @@ define(function() {
 		this._context = context;
 	};
 
+	/**
+	 * Builds a URL from a route name and the data required to populate the
+	 * route template.
+	 *
+	 * @param {String} name Name of the route to build from. You set the name with addRoute.
+	 * @param {Object} data Named components of the URL to populate.
+	 * @return {String} The built URL.
+	 */
+	Router.prototype.reverse = function(name) {
+	};
+
 	return Router;
 });
