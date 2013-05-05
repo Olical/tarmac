@@ -24,16 +24,17 @@ define(function() {
 	 * Route segments can contain any alphanumeric character as well as hyphens
 	 * and underscores.
 	 *
+	 * @param {String} name The name of the route, can be used for reversing a URL.
 	 * @param {String} route URL to match with segments to extract denoted with a colon.
 	 * @param {Function} controller Controller class to map to, not a class instance, an actual class.
 	 * @param {String} action Optional action string to pass through to the controller.
-	 * @param {String} name The name of the route, can be used for reversing a URL.
 	 * @return {Object} The current instance to allow chaining.
 	 */
-	Router.prototype.addRoute = function(route, controller, action, name) {
+	Router.prototype.addRoute = function(name, route, controller, action) {
 		var routes = this.getRoutes();
 		var compiledRoute = this._compileRoute(route);
 		routes[route] = {
+			routeSource: route,
 			route: compiledRoute.regex,
 			keys: compiledRoute.keys,
 			controller: controller,
@@ -182,7 +183,31 @@ define(function() {
 	 * @param {Object} data Named components of the URL to populate.
 	 * @return {String} The built URL.
 	 */
-	Router.prototype.reverse = function(name) {
+	Router.prototype.reverse = function(name, data) {
+		var route = this._getRouteByName(name);
+		return route.routeSource.replace(this._routeSegmentRegExp, function(match, key) {
+			return data[key];
+		});
+	};
+
+	/**
+	 * Returns the first route with a name matching the provided string.
+	 *
+	 * @param {String} name Name of the route to find.
+	 * @return {Object|null} The matched route or null if not found.
+	 * @private
+	 */
+	Router.prototype._getRouteByName = function(name) {
+		var key;
+		var routes = this.getRoutes();
+
+		for (key in routes) {
+			if (routes.hasOwnProperty(key) && routes[key].name === name) {
+				return routes[key];
+			}
+		}
+
+		return null;
 	};
 
 	return Router;
