@@ -10,7 +10,7 @@ define([
 		this.events = new TestEvents();
 	});
 
-	suite('tarmac/mixins/Events', function() {
+	suite('mixins/Events', function() {
 		suite('getEvents', function() {
 			test('can fetch the events object', function() {
 				var events = this.events.getEvents();

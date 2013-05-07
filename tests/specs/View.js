@@ -1,4 +1,4 @@
 define(function() {
-	suite('tarmac/View', function() {
+	suite('View', function() {
 	});
 });

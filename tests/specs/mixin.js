@@ -1,7 +1,7 @@
 define([
 	'tarmac/mixin'
 ], function(mixin) {
-	suite('tarmac/mixin', function() {
+	suite('mixin', function() {
 		test('mixes in all properties from all inputs', function() {
 			var a = {
 				foo: 100,

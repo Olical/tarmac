@@ -1,4 +1,4 @@
 define(function() {
-	suite('tarmac/Storage', function() {
+	suite('Storage', function() {
 	});
 });

@@ -1,7 +1,7 @@
 define([
 	'tarmac/Model'
 ], function(Model) {
-	suite('tarmac/Model', function() {
+	suite('Model', function() {
 		setup(function() {
 			this.model = new Model();
 		});

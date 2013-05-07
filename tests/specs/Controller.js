@@ -2,7 +2,7 @@ define([
 	'tarmac/Controller',
 	'sinon'
 ], function(Controller) {
-	suite('tarmac/Controller', function() {
+	suite('Controller', function() {
 		setup(function() {
 			this.controller = new Controller();
 		});

@@ -3,7 +3,7 @@ define([
 	'tarmac/Controller',
 	'sinon'
 ], function(Router, Controller) {
-	suite('tarmac/Router', function() {
+	suite('Router', function() {
 		setup(function() {
 			this.SpyController = function(){};
 			this.SpyController.prototype = Object.create(Controller.prototype);
