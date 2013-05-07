@@ -1,6 +1,6 @@
 define(function() {
-	function NAME() {
+	function View() {
 	}
 
-	return NAME;
+	return View;
 });

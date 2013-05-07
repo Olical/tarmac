@@ -1,6 +1,6 @@
 define(function() {
-	function NAME() {
+	function Storage() {
 	}
 
-	return NAME;
+	return Storage;
 });
