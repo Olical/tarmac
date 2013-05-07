@@ -6,7 +6,11 @@ define(function() {
 	 * array in storage you can just run model.data.someArray.push, no juggling
 	 * .get('someArray').
 	 *
-	 * You can pass an object to the constructor to start it with data.
+	 * You can pass an object to the constructor to start it with data. Models
+	 * should be loaded by your controllers which should also stitch them into
+	 * views whilst keeping them separate from each other.
+	 *
+	 * Your controllers should be the middlemen between your views and models.
 	 *
 	 * @param {Object} data Initial data to store in the model.
 	 * @class
