@@ -21,8 +21,8 @@ define(function() {
 	 * example: "/user/:id/". This will pass the id through to the controller
 	 * under request.id.
 	 *
-	 * Route segments can contain any alphanumeric character as well as hyphens
-	 * and underscores.
+	 * Route segments can contain any regex "\w" character. This includes any
+	 * alphanumeric characters as well as underscores.
 	 *
 	 * @param {String} name The name of the route, can be used for reversing a URL.
 	 * @param {String} route URL to match with segments to extract denoted with a colon.
@@ -56,9 +56,10 @@ define(function() {
 	 */
 	Router.prototype._compileRoute = function(route) {
 		var keys = [];
-		var routeRegExpSource = route.replace(this._routeSegmentRegExp, function(match, key) {
+		var cleanRoute = this._escapeRegExp(route);
+		var routeRegExpSource = cleanRoute.replace(this._routeSegmentRegExp, function(match, key) {
 			keys.push(key);
-			return this._validRouteSegment;
+			return this._validUrlSegment;
 		}.bind(this));
 		var routeRegExp = new RegExp('^' + routeRegExpSource + '$', 'g');
 
@@ -74,7 +75,16 @@ define(function() {
 	 * @type {String}
 	 * @private
 	 */
-	Router.prototype._validRouteSegment = '([a-zA-Z0-9_-]+)';
+	Router.prototype._validRouteSegment = '(\\w+)';
+
+	/**
+	 * RegExp segment to match URL components that can be assigned to keys
+	 * found in the route.
+	 *
+	 * @type {String}
+	 * @private
+	 */
+	Router.prototype._validUrlSegment = '([\\w-]+)';
 
 	/**
 	 * Compiled RegExp to match named keys in route URLs.
@@ -83,6 +93,25 @@ define(function() {
 	 * @private
 	 */
 	Router.prototype._routeSegmentRegExp = new RegExp(':' + Router.prototype._validRouteSegment, 'g');
+
+	/**
+	 * RegExp to match RegExp special characters.
+	 *
+	 * @type {RegExp}
+	 * @private
+	 */
+	Router.prototype._regExpSpecialCharacters = /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g;
+
+	/**
+	 * Escapes a string for use inside a RegExp.
+	 *
+	 * @param {String} source
+	 * @return {String}
+	 * @private
+	 */
+	Router.prototype._escapeRegExp = function(source) {
+		return source.replace(this._regExpSpecialCharacters, '\\$&');
+	};
 
 	/**
 	 * Fetches the routes object.
@@ -165,7 +194,8 @@ define(function() {
 	};
 
 	/**
-	 * Sets the context object to the one that you specify. This object is passed to the controllers execute method when routing.
+	 * Sets the context object to the one that you specify. This object is
+	 * passed to the controllers execute method when routing.
 	 *
 	 * @param {Object} context Your desired context object.
 	 * @return {Object} The current instance to allow chaining.

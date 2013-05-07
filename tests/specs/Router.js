@@ -80,6 +80,13 @@ define([
 				this.router.route('/users/100/oliver-caldwell/');
 				assert.strictEqual(this.SpyController.prototype.execute.args[0][2], targetContext);
 			});
+
+			test('can not use regular expression syntax in routes', function() {
+				var route = '/user./:id/:slug/';
+				this.router.addRoute('test', route, this.SpyController);
+				this.router.route('/users/100/oliver-caldwell/');
+				assert.isFalse(this.SpyController.prototype.execute.called);
+			});
 		});
 
 		suite('getContextObject', function() {
