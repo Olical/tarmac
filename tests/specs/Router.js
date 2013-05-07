@@ -87,6 +87,17 @@ define([
 				this.router.route('/users/100/oliver-caldwell/');
 				assert.isFalse(this.SpyController.prototype.execute.called);
 			});
+
+			test('can use hash based URLs', function() {
+				var route = '#/users/:id/:slug/';
+				this.router.addRoute('test', route, this.SpyController);
+				this.router.route('#/users/100/oliver-caldwell/');
+				var request = {
+					id: '100',
+					slug: 'oliver-caldwell'
+				};
+				assert.deepEqual(this.SpyController.prototype.execute.args[0][1], request);
+			});
 		});
 
 		suite('getContextObject', function() {
