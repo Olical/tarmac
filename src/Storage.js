@@ -1,6 +1,6 @@
 define([
-	'./storageAdaptors/InstanceStorage'
-], function(InstanceStorage) {
+	'./storageAdaptors/InstanceStorageAdaptor'
+], function(InstanceStorageAdaptor) {
 	/**
 	 * Handles loading and saving your models from a local or remove source.
 	 * Remote could just mean the localStorage object, it does not have to be
@@ -13,7 +13,7 @@ define([
 	 * @class
 	 */
 	function Storage() {
-		this._setStorageAdaptor(new InstanceStorage);
+		this._setStorageAdaptor(new InstanceStorageAdaptor);
 	}
 
 	/**
