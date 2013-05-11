@@ -6,7 +6,7 @@ define([
 			this.model = new Model();
 		});
 
-		suite('Model', function() {
+		suite('constructor', function() {
 			test('constructor lets you set data', function() {
 				var data = {
 					foo: true
