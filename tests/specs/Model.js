@@ -12,11 +12,48 @@ define([
 					foo: true
 				};
 				var model = new Model(data);
-				assert.strictEqual(model.data, data);
+				assert.deepEqual(model.get(), data);
+			});
+		});
+
+		suite('get', function() {
+			test('can fetch whole blank object', function() {
+				assert.deepEqual(this.model.get(), {});
 			});
 
-			test('constructor sets a default data object if you do not pass one', function() {
-				assert.isObject(this.model.data);
+			test('can fetch a key', function() {
+				this.model.set('foo', 'bar');
+				assert.strictEqual(this.model.get('foo'), 'bar');
+			});
+
+			test('can fetch a populated object', function() {
+				var value = {
+					foo: 100,
+					bar: 200
+				};
+				this.model.set(value);
+				assert.deepEqual(this.model.get(), value);
+			});
+		});
+
+		suite('set', function() {
+			test('allows chaining', function() {
+				var result = this.model.set('foo', 'bar');
+				assert.strictEqual(result, this.model);
+			});
+
+			test('can set a key', function() {
+				this.model.set('foo', 'bar');
+				assert.strictEqual(this.model.get('foo'), 'bar');
+			});
+
+			test('can set an object', function() {
+				var value = {
+					foo: 100,
+					bar: 200
+				};
+				this.model.set(value);
+				assert.deepEqual(this.model.get(), value);
 			});
 		});
 	});
