@@ -9,6 +9,7 @@ define([
 	 * @extends StorageAdaptor
 	 */
 	function InstanceStorageAdaptor() {
+		StorageAdaptor.apply(this, arguments);
 	}
 	InstanceStorageAdaptor.prototype = Object.create(StorageAdaptor.prototype);
 
