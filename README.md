@@ -1,6 +1,6 @@
 # Tarmac
 
-Tiny and unopinionated AMD MVC JavaScript library.
+Tiny and unopinionated AMD MVC JavaScript framework.
 
 ## Tests
 
