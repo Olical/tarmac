@@ -22,6 +22,8 @@ define([
 		'specs/Router',
 		'specs/Storage',
 		'specs/View',
+		'specs/storageAdaptors/StorageAdaptor',
+		'specs/storageAdaptors/InstanceStorageAdaptor',
 
 		'specs/mixin',
 		'specs/mixins/Events'
