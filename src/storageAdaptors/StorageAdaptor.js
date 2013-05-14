@@ -18,9 +18,15 @@ define(function() {
 	};
 
 	/**
-	 * Loads the passed model from the storage endpoint.
+	 * Searches the storage endpoint for models that match the passed criteria.
+	 *
+	 * This can be implemented however you want, it just has to return an array
+	 * of models.
+	 *
+	 * @return {Model[]} All models that match.
 	 */
-	StorageAdaptor.prototype.load = function() {
+	StorageAdaptor.prototype.find = function() {
+		return [];
 	};
 
 	return StorageAdaptor;
