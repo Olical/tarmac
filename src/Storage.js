@@ -45,7 +45,7 @@ define(function() {
 	 * If you pass a model then it will return the cache array for that model,
 	 * if you don't pass anything then it will return the whole cache object.
 	 *
-	 * @param {Object} [modelType] Optional model filter. If passed an array of the specific data will be returned.
+	 * @param {Model} [modelType] Optional model filter. If passed an array of the specific data will be returned.
 	 * @return {Object|Object[]} Data currently stored against the passed model type, or the whole object if you didn't pass anything.
 	 */
 	Storage.prototype.getCache = function(modelType) {
@@ -62,6 +62,25 @@ define(function() {
 		}
 
 		return this._cache;
+	};
+
+	/**
+	 * Clears either the whole cache or the cache for a specific model.
+	 *
+	 * @param {Model} [modelType] If this is passed then the cache will only be cleared for that model.
+	 * @return {Object} Current instance for chaining.
+	 */
+	Storage.prototype.clearCache = function(modelType) {
+		var cache = this.getCache();
+
+		if (modelType) {
+			delete cache[modelType.name];
+		}
+		else {
+			delete this._cache;
+		}
+
+		return this;
 	};
 
 	return Storage;
