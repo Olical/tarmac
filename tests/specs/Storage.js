@@ -18,14 +18,14 @@ define([
 			});
 		});
 
-		suite('save', function() {
+		suite('store', function() {
 			test('returns current instance', function() {
-				var result = this.storage.save(this.TestModel, this.model);
+				var result = this.storage.store(this.TestModel, this.model);
 				assert.strictEqual(result, this.storage);
 			});
 
 			test('stores a model', function() {
-				this.storage.save(this.TestModel, this.model);
+				this.storage.store(this.TestModel, this.model);
 				var result = this.storage.getCache(this.TestModel);
 				assert.lengthOf(result, 1);
 				assert.deepEqual(result[0], this.model.get());
@@ -37,8 +37,8 @@ define([
 					github: 'Wolfy87'
 				});
 
-				this.storage.save(this.TestModel, this.model);
-				this.storage.save(this.TestModel, localModel);
+				this.storage.store(this.TestModel, this.model);
+				this.storage.store(this.TestModel, localModel);
 				var result = this.storage.getCache(this.TestModel);
 
 				assert.lengthOf(result, 2);

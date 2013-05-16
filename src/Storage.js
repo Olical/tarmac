@@ -1,9 +1,9 @@
 define(function() {
 	/**
-	 * Saves and finds models. This class stores all models within the instance
-	 * so any persistence is lost when the object is destroyed. It can be
-	 * extended to keep data between page loads or server sessions, depending
-	 * on where you are using it.
+	 * Stores and finds models. This class stores all models within the
+	 * instance so any persistence is lost when the object is destroyed. It can
+	 * be extended to keep data between page loads or server sessions,
+	 * depending on where you are using it.
 	 *
 	 * An example extension would be to pipe the data into localStorage if you
 	 * are running within an browser.
@@ -14,13 +14,13 @@ define(function() {
 	}
 
 	/**
-	 * Saves the passed model for later use.
+	 * Stores the passed model for later use.
 	 *
 	 * @param {Model} modelType The type of model that the target was created from.
-	 * @param {Object} target Model instance to save.
+	 * @param {Object} target Model instance to store.
 	 * @return {Object} Current instance for chaining.
 	 */
-	Storage.prototype.save = function(modelType, target) {
+	Storage.prototype.store = function(modelType, target) {
 		var cache = this.getCache(modelType);
 		cache.push(target.get());
 		return this;
