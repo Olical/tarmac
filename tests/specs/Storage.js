@@ -31,6 +31,13 @@ define([
 				var result = this.storage.getCache(Model);
 				assert.isArray(result);
 			});
+
+			test('fetching a models array creates a persistent array for it', function() {
+				var storage = new Storage();
+				storage.getCache(Model);
+				var result = storage.getCache();
+				assert.isArray(result.Model);
+			});
 		});
 	});
 });
