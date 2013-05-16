@@ -21,6 +21,8 @@ define(function() {
 	 * @return {Object} Current instance for chaining.
 	 */
 	Storage.prototype.save = function(modelType, target) {
+		var cache = this.getCache(modelType);
+		cache.push(target.get());
 		return this;
 	};
 

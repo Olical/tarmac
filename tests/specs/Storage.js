@@ -23,6 +23,28 @@ define([
 				var result = this.storage.save(this.TestModel, this.model);
 				assert.strictEqual(result, this.storage);
 			});
+
+			test('stores a model', function() {
+				this.storage.save(this.TestModel, this.model);
+				var result = this.storage.getCache(this.TestModel);
+				assert.lengthOf(result, 1);
+				assert.deepEqual(result[0], this.model.get());
+			});
+
+			test('stores multiple models', function() {
+				var localModel = new this.TestModel({
+					name: 'Oliver Caldwell',
+					github: 'Wolfy87'
+				});
+
+				this.storage.save(this.TestModel, this.model);
+				this.storage.save(this.TestModel, localModel);
+				var result = this.storage.getCache(this.TestModel);
+
+				assert.lengthOf(result, 2);
+				assert.deepEqual(result[0], this.model.get());
+				assert.deepEqual(result[1], localModel.get());
+			});
 		});
 
 		suite('find', function() {
