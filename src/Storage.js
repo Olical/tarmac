@@ -36,5 +36,33 @@ define(function() {
 		return [];
 	};
 
+	/**
+	 * Fetch or create the local cache array or object. For the default storage
+	 * object, this is where everything is stored. For other implementations it
+	 * could be the holding area before the data is committed to a remote
+	 * database.
+	 *
+	 * If you pass a model then it will return the cache array for that model,
+	 * if you don't pass anything then it will return the whole cache object.
+	 *
+	 * @param {Object} [modelType] Optional model filter. If passed an array of the specific data will be returned.
+	 * @return {Object|Object[]} Data currently stored against the passed model type, or the whole object if you didn't pass anything.
+	 */
+	Storage.prototype.getCache = function(modelType) {
+		if (typeof this._cache === 'undefined') {
+			this._cache = {};
+		}
+
+		if (modelType) {
+			if (!this._cache.hasOwnProperty(modelType.name)) {
+				this._cache[modelType.name] = [];
+			}
+
+			return this._cache[modelType.name];
+		}
+
+		return this._cache;
+	};
+
 	return Storage;
 });
