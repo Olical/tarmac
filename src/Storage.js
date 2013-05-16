@@ -16,10 +16,11 @@ define(function() {
 	/**
 	 * Saves the passed model for later use.
 	 *
+	 * @param {Model} modelType The type of model that the target was created from.
 	 * @param {Object} target Model instance to save.
 	 * @return {Object} Current instance for chaining.
 	 */
-	Storage.prototype.save = function(target) {
+	Storage.prototype.save = function(modelType, target) {
 		return this;
 	};
 

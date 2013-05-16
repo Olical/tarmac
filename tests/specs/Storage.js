@@ -6,14 +6,21 @@ define([
 		setup(function() {
 			this.storage = new Storage();
 			
-			function TestModel(){}
+			function TestModel() {
+				Model.apply(this, arguments);
+			}
 			TestModel.prototype = Object.create(Model.prototype);
 			this.TestModel = TestModel;
+
+			this.model = new TestModel({
+				foo: true,
+				bar: false
+			});
 		});
 
 		suite('save', function() {
 			test('returns current instance', function() {
-				var result = this.storage.save();
+				var result = this.storage.save(this.TestModel, this.model);
 				assert.strictEqual(result, this.storage);
 			});
 		});
