@@ -1,4 +1,7 @@
-define(function() {
+define([
+	'./mixin',
+	'./mixins/Events'
+], function(mixin, Events) {
 	/**
 	 * Controllers are instantiated by the router and have their execute
 	 * method executed when routed to. This class should handle the required
@@ -9,6 +12,8 @@ define(function() {
 	 */
 	function Controller() {
 	}
+
+	mixin(Controller.prototype, Events);
 
 	/**
 	 * Called when the controller has been routed to. Gets passed all of the
@@ -29,7 +34,12 @@ define(function() {
 	 */
 	Controller.prototype.execute = function(action, request, context) {
 		var actionHandlerName = action + 'Action';
-		this[actionHandlerName](request, context);
+
+		if (this[actionHandlerName]) {
+			this[actionHandlerName](request, context);
+		}
+
+		this.emitEvent('executed', action, request, context);
 		return this;
 	};
 

@@ -28,6 +28,23 @@ define([
 				assert.strictEqual(args[0], request);
 				assert.strictEqual(args[1], context);
 			});
+
+			test('emits the executed event', function() {
+				var spy = sinon.spy();
+				var request = {
+					name: 'oliver-caldwell',
+					github: 'Wolfy87'
+				};
+				var context = {
+					foo: true,
+					bar: false
+				};
+				this.controller.addListener('executed', spy);
+				this.controller.execute('test', request, context);
+
+				assert.isTrue(spy.called);
+				assert.isTrue(spy.calledWith('test', request, context));
+			});
 		});
 	});
 });
