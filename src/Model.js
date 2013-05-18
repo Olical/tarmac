@@ -73,5 +73,52 @@ define(function() {
 		return this._storage;
 	};
 
+	/**
+	 * Fetches the (ideally) unique key to identify the model with. If one
+	 * hasn't been set internally using unique data then it will generate a
+	 * random one. This should be temporary because there is a chance, no matter
+	 * how small, that two models will have their automatically assigned random
+	 * keys collide.
+	 *
+	 * @return {String} The key for this model.
+	 */
+	Model.prototype.getKey = function() {
+		if (!this._key) {
+			this._setRandomKey();
+		}
+
+		return this._key;
+	};
+
+	/**
+	 * Generates a random key and assigns it to the model.
+	 *
+	 * @return {Object} Current instance for chaining.
+	 * @private
+	 */
+	Model.prototype._setRandomKey = function() {
+		var time = Date.now();
+		var randomSalt = Math.floor(Math.random() * 20001) - 10000;
+		var keyCharacters = btoa(time + randomSalt).split('');
+		keyCharacters.sort(function() {
+			return 0.5 - Math.random();
+		});
+
+		this._setKey(keyCharacters.join(''));
+
+		return this;
+	};
+
+	/**
+	 * Sets the models key to the one provided.
+	 *
+	 * @param {String} key The desired key.
+	 * @return {Object} Current instance for chaining.
+	 * @private
+	 */
+	Model.prototype._setKey = function(key) {
+		this._key = key;
+	};
+
 	return Model;
 });
