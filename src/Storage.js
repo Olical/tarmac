@@ -27,19 +27,6 @@ define(function() {
 	};
 
 	/**
-	 * Searches through the stored instances of the passed model using the
-	 * provided criteria. It will return all models of the correct type that
-	 * match your search.
-	 *
-	 * @param {Model} modelType A model class which the matched models have to be an instance of.
-	 * @param {Object} search Criteria that the matching models must meet.
-	 * @return {Object} All models that match.
-	 */
-	Storage.prototype.find = function(modelType, search) {
-		return this.get(modelType);
-	};
-
-	/**
 	 * This will either return the whole storage object, a model types storage
 	 * object or a specific models object.
 	 *

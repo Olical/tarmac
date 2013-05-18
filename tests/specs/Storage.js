@@ -49,29 +49,6 @@ define([
 			});
 		});
 
-		suite('find', function() {
-			test('returns an object', function() {
-				var result = this.storage.find();
-				assert.isObject(result);
-			});
-
-			test('with no filter, everything is returned', function() {
-				var localModel = new this.TestModel({
-					name: 'Oliver Caldwell',
-					github: 'Wolfy87'
-				});
-
-				this.storage.store(this.TestModel, this.model);
-				this.storage.store(this.TestModel, localModel);
-				var result = this.storage.find(this.TestModel);
-				var keys = Object.keys(result);
-
-				assert.lengthOf(keys, 2);
-				assert.deepEqual(result[keys[0]], this.model.get());
-				assert.deepEqual(result[keys[1]], localModel.get());
-			});
-		});
-
 		suite('get', function() {
 			test('returns an object with no arguments', function() {
 				var result = this.storage.get();
