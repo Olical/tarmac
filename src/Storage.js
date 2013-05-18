@@ -21,24 +21,24 @@ define(function() {
 	 * @return {Object} Current instance for chaining.
 	 */
 	Storage.prototype.store = function(modelType, target) {
-		var storage = this.get(modelType);
+		var storage = this._getModelStorage(modelType);
 		storage[target.getKey()] = target.get();
 		return this;
 	};
 
 	/**
-	 * This will either return the whole storage object, a model types storage
-	 * object or a specific models object.
+	 * This will either return the whole storage object, an array of
+	 * instantiated model objects or a specific models data object.
 	 *
 	 * If you don't pass anything then it will return the whole storage object.
-	 * If you pass a model type then it will return all models for it.
+	 * If you pass a model type then it will return all models for it. The
+	 * array of models are actual models, not just objects.
 	 *
-	 * If you pass an actual model instance or a key for one then it will
-	 * return that specific models data.
+	 * If you pass a models key then it will return that models data object.
 	 *
 	 * @param {Model} [modelType] Optional model filter.
-	 * @param {Object|String} [model] An actual model or a key of a model to fetch the data for.
-	 * @return {Object} Data currently stored against the passed model type, or the whole object if you didn't pass anything.
+	 * @param {String} [model] A key of a model to fetch the data for.
+	 * @return {Object|Object[]} Will return the whole storage object, an array of all instantiated models for the passed type or a single matching models data object.
 	 */
 	Storage.prototype.get = function(modelType, model) {
 		var modelStorage;
@@ -55,15 +55,10 @@ define(function() {
 			modelStorage = this._storage[modelType.name];
 
 			if (model) {
-				if (typeof model === 'string') {
-					return modelStorage[model];
-				}
-				else {
-					return modelStorage[model.getKey()];
-				}
+				return modelStorage[model];
 			}
 			else {
-				return modelStorage;
+				return this._constructModels(modelType, modelStorage);
 			}
 		}
 
@@ -84,7 +79,7 @@ define(function() {
 
 		if (modelType) {
 			if (model) {
-				storage = this.get(modelType);
+				storage = this._getModelStorage(modelType);
 
 				if (typeof model === 'string') {
 					delete storage[model];
@@ -103,6 +98,46 @@ define(function() {
 		}
 
 		return this;
+	};
+
+	/**
+	 * Returns a models storage object. Will create it if required.
+	 *
+	 * @param {Model} modelType The model class to fetch the storage object for.
+	 * @return {Object} The specified models storage.
+	 * @private
+	 */
+	Storage.prototype._getModelStorage = function(modelType) {
+		var storage = this.get();
+		var key = modelType.name;
+
+		if (!storage[key]) {
+			storage[key] = {};
+		}
+
+		return storage[key];
+	};
+
+	/**
+	 * Builds an array of model instances based on an input object of raw
+	 * objects. You much also provide a model type to build from.
+	 *
+	 * @param {Model} modelType Type to instantiate the data objects into.
+	 * @param {Object} models The actual model data to build the models from.
+	 * @return {Object[]} Array of built model objects.
+	 * @private
+	 */
+	Storage.prototype._constructModels = function(modelType, models) {
+		var result = [];
+		var key;
+
+		for (key in models) {
+			if (models.hasOwnProperty(key)) {
+				result.push(new modelType(models[key]));
+			}
+		}
+
+		return result;
 	};
 
 	return Storage;

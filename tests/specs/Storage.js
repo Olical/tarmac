@@ -27,9 +27,8 @@ define([
 			test('stores a model', function() {
 				this.storage.store(this.TestModel, this.model);
 				var result = this.storage.get(this.TestModel);
-				var keys = Object.keys(result);
-				assert.lengthOf(keys, 1);
-				assert.deepEqual(result[keys[0]], this.model.get());
+				assert.lengthOf(result, 1);
+				assert.deepEqual(result[0].get(), this.model.get());
 			});
 
 			test('stores multiple models', function() {
@@ -41,11 +40,10 @@ define([
 				this.storage.store(this.TestModel, this.model);
 				this.storage.store(this.TestModel, localModel);
 				var result = this.storage.get(this.TestModel);
-				var keys = Object.keys(result);
 
-				assert.lengthOf(keys, 2);
-				assert.deepEqual(result[keys[0]], this.model.get());
-				assert.deepEqual(result[keys[1]], localModel.get());
+				assert.lengthOf(result, 2);
+				assert.deepEqual(result[0].get(), this.model.get());
+				assert.deepEqual(result[1].get(), localModel.get());
 			});
 		});
 
@@ -55,9 +53,9 @@ define([
 				assert.isObject(result);
 			});
 
-			test('returns an object with a model', function() {
+			test('returns an array with a model', function() {
 				var result = this.storage.get(Model);
-				assert.isObject(result);
+				assert.isArray(result);
 			});
 
 			test('fetching a model types object creates a persistent object for it', function() {
@@ -66,13 +64,6 @@ define([
 				assert.isObject(result.Model);
 			});
 			
-			test('can fetch an individual model by model object (for reloading from DB etc)', function() {
-				this.storage.store(this.TestModel, this.model);
-				var original = this.model.get();
-				var result = this.storage.get(this.TestModel, this.model);
-				assert.deepEqual(result, original);
-			});
-
 			test('can fetch an individual model by key (for reloading from DB etc)', function() {
 				this.storage.store(this.TestModel, this.model);
 				var original = this.model.get();
@@ -124,10 +115,9 @@ define([
 				this.storage.remove(this.TestModel, this.model);
 				var original = localModel.get();
 				var result = this.storage.get(this.TestModel);
-				var keys = Object.keys(result);
 
-				assert.lengthOf(keys, 1);
-				assert.deepEqual(result[keys[0]], original);
+				assert.lengthOf(result, 1);
+				assert.deepEqual(result[0].get(), original);
 			});
 
 			test('can remove a single model by passing a specific model key', function() {
@@ -142,10 +132,9 @@ define([
 				this.storage.remove(this.TestModel, key);
 				var original = localModel.get();
 				var result = this.storage.get(this.TestModel);
-				var keys = Object.keys(result);
 
-				assert.lengthOf(keys, 1);
-				assert.deepEqual(result[keys[0]], original);
+				assert.lengthOf(result, 1);
+				assert.deepEqual(result[0].get(), original);
 			});
 		});
 	});
