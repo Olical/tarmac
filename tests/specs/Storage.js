@@ -26,9 +26,10 @@ define([
 
 			test('stores a model', function() {
 				this.storage.store(this.TestModel, this.model);
-				var result = this.storage.getCache(this.TestModel);
-				assert.lengthOf(result, 1);
-				assert.deepEqual(result[0], this.model.get());
+				var result = this.storage.get(this.TestModel);
+				var keys = Object.keys(result);
+				assert.lengthOf(keys, 1);
+				assert.deepEqual(result[keys[0]], this.model.get());
 			});
 
 			test('stores multiple models', function() {
@@ -39,68 +40,135 @@ define([
 
 				this.storage.store(this.TestModel, this.model);
 				this.storage.store(this.TestModel, localModel);
-				var result = this.storage.getCache(this.TestModel);
+				var result = this.storage.get(this.TestModel);
+				var keys = Object.keys(result);
 
-				assert.lengthOf(result, 2);
-				assert.deepEqual(result[0], this.model.get());
-				assert.deepEqual(result[1], localModel.get());
+				assert.lengthOf(keys, 2);
+				assert.deepEqual(result[keys[0]], this.model.get());
+				assert.deepEqual(result[keys[1]], localModel.get());
 			});
 		});
 
 		suite('find', function() {
-			test('returns an array', function() {
+			test('returns an object', function() {
 				var result = this.storage.find();
-				assert.isArray(result);
-			});
-		});
-
-		suite('getCache', function() {
-			test('returns an object with no arguments', function() {
-				var result = this.storage.getCache();
 				assert.isObject(result);
 			});
 
-			test('returns an array with a model', function() {
-				var result = this.storage.getCache(Model);
-				assert.isArray(result);
-			});
+			test('with no filter, everything is returned', function() {
+				var localModel = new this.TestModel({
+					name: 'Oliver Caldwell',
+					github: 'Wolfy87'
+				});
 
-			test('fetching a models array creates a persistent array for it', function() {
-				this.storage.getCache(Model);
-				var result = this.storage.getCache();
-				assert.isArray(result.Model);
+				this.storage.store(this.TestModel, this.model);
+				this.storage.store(this.TestModel, localModel);
+				var result = this.storage.find(this.TestModel);
+				var keys = Object.keys(result);
+
+				assert.lengthOf(keys, 2);
+				assert.deepEqual(result[keys[0]], this.model.get());
+				assert.deepEqual(result[keys[1]], localModel.get());
 			});
 		});
 
-		suite('clearCache', function() {
-			test('clears whole caches', function() {
-				this.storage.getCache(Model);
-				this.storage.getCache(this.TestModel);
-				var result = this.storage.getCache();
+		suite('get', function() {
+			test('returns an object with no arguments', function() {
+				var result = this.storage.get();
+				assert.isObject(result);
+			});
 
-				assert.isArray(result.Model);
-				assert.isArray(result.TestModel);
+			test('returns an object with a model', function() {
+				var result = this.storage.get(Model);
+				assert.isObject(result);
+			});
 
-				this.storage.clearCache();
-				result = this.storage.getCache();
+			test('fetching a model types object creates a persistent object for it', function() {
+				this.storage.get(Model);
+				var result = this.storage.get();
+				assert.isObject(result.Model);
+			});
+			
+			test('can fetch an individual model by model object (for reloading from DB etc)', function() {
+				this.storage.store(this.TestModel, this.model);
+				var original = this.model.get();
+				var result = this.storage.get(this.TestModel, this.model);
+				assert.deepEqual(result, original);
+			});
+
+			test('can fetch an individual model by key (for reloading from DB etc)', function() {
+				this.storage.store(this.TestModel, this.model);
+				var original = this.model.get();
+				var key = this.model.getKey();
+				var result = this.storage.get(this.TestModel, key);
+				assert.deepEqual(result, original);
+			});
+		});
+
+		suite('remove', function() {
+			test('clears whole storage', function() {
+				this.storage.get(Model);
+				this.storage.get(this.TestModel);
+				var result = this.storage.get();
+
+				assert.isObject(result.Model);
+				assert.isObject(result.TestModel);
+
+				this.storage.remove();
+				result = this.storage.get();
 
 				assert.isUndefined(result.Model);
 				assert.isUndefined(result.TestModel);
 			});
 
-			test('clears singular caches', function() {
-				this.storage.getCache(Model);
-				this.storage.getCache(this.TestModel);
-				var result = this.storage.getCache();
+			test('clears a model types storage', function() {
+				this.storage.get(Model);
+				this.storage.get(this.TestModel);
+				var result = this.storage.get();
 
-				assert.isArray(result.Model);
-				assert.isArray(result.TestModel);
+				assert.isObject(result.Model);
+				assert.isObject(result.TestModel);
 
-				this.storage.clearCache(Model);
-				result = this.storage.getCache();
+				this.storage.remove(Model);
+				result = this.storage.get();
 
 				assert.isUndefined(result.Model);
-				assert.isArray(result.TestModel);
+				assert.isObject(result.TestModel);
+			});
+
+			test('can remove a single model by passing a specific model object', function() {
+				var localModel = new this.TestModel({
+					name: 'Oliver Caldwell',
+					github: 'Wolfy87'
+				});
+
+				this.storage.store(this.TestModel, this.model);
+				this.storage.store(this.TestModel, localModel);
+				this.storage.remove(this.TestModel, this.model);
+				var original = localModel.get();
+				var result = this.storage.get(this.TestModel);
+				var keys = Object.keys(result);
+
+				assert.lengthOf(keys, 1);
+				assert.deepEqual(result[keys[0]], original);
+			});
+
+			test('can remove a single model by passing a specific model key', function() {
+				var localModel = new this.TestModel({
+					name: 'Oliver Caldwell',
+					github: 'Wolfy87'
+				});
+
+				this.storage.store(this.TestModel, this.model);
+				this.storage.store(this.TestModel, localModel);
+				var key = this.model.getKey();
+				this.storage.remove(this.TestModel, key);
+				var original = localModel.get();
+				var result = this.storage.get(this.TestModel);
+				var keys = Object.keys(result);
+
+				assert.lengthOf(keys, 1);
+				assert.deepEqual(result[keys[0]], original);
 			});
 		});
 	});

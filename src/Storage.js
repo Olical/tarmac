@@ -21,8 +21,8 @@ define(function() {
 	 * @return {Object} Current instance for chaining.
 	 */
 	Storage.prototype.store = function(modelType, target) {
-		var cache = this.getCache(modelType);
-		cache.push(target.get());
+		var storage = this.get(modelType);
+		storage[target.getKey()] = target.get();
 		return this;
 	};
 
@@ -33,54 +33,86 @@ define(function() {
 	 *
 	 * @param {Model} modelType A model class which the matched models have to be an instance of.
 	 * @param {Object} search Criteria that the matching models must meet.
-	 * @return {Object[]} All models that match.
+	 * @return {Object} All models that match.
 	 */
 	Storage.prototype.find = function(modelType, search) {
-		return [];
+		return this.get(modelType);
 	};
 
 	/**
-	 * Fetch or create the local cache array or object. For the default storage
-	 * object, this is where everything is stored. For other implementations it
-	 * could be the holding area before the data is committed to a remote
-	 * database.
+	 * This will either return the whole storage object, a model types storage
+	 * object or a specific models object.
 	 *
-	 * If you pass a model then it will return the cache array for that model,
-	 * if you don't pass anything then it will return the whole cache object.
+	 * If you don't pass anything then it will return the whole storage object.
+	 * If you pass a model type then it will return all models for it.
 	 *
-	 * @param {Model} [modelType] Optional model filter. If passed an array of the specific data will be returned.
-	 * @return {Object|Object[]} Data currently stored against the passed model type, or the whole object if you didn't pass anything.
+	 * If you pass an actual model instance or a key for one then it will
+	 * return that specific models data.
+	 *
+	 * @param {Model} [modelType] Optional model filter.
+	 * @param {Object|String} [model] An actual model or a key of a model to fetch the data for.
+	 * @return {Object} Data currently stored against the passed model type, or the whole object if you didn't pass anything.
 	 */
-	Storage.prototype.getCache = function(modelType) {
-		if (typeof this._cache === 'undefined') {
-			this._cache = {};
+	Storage.prototype.get = function(modelType, model) {
+		var modelStorage;
+
+		if (typeof this._storage === 'undefined') {
+			this._storage = {};
 		}
 
 		if (modelType) {
-			if (!this._cache.hasOwnProperty(modelType.name)) {
-				this._cache[modelType.name] = [];
+			if (!this._storage.hasOwnProperty(modelType.name)) {
+				this._storage[modelType.name] = {};
 			}
 
-			return this._cache[modelType.name];
+			modelStorage = this._storage[modelType.name];
+
+			if (model) {
+				if (typeof model === 'string') {
+					return modelStorage[model];
+				}
+				else {
+					return modelStorage[model.getKey()];
+				}
+			}
+			else {
+				return modelStorage;
+			}
 		}
 
-		return this._cache;
+		return this._storage;
 	};
 
 	/**
-	 * Clears either the whole cache or the cache for a specific model.
+	 * Clears either the whole storage or the storage for a specific model
+	 * type. You can also use this to remove a model by passing the actual
+	 * model or it's key.
 	 *
-	 * @param {Model} [modelType] If this is passed then the cache will only be cleared for that model.
+	 * @param {Model} [modelType] If this is passed then the storage will only be cleared for that model.
+	 * @param {Object|String} [model] Actual model to remove from storage.
 	 * @return {Object} Current instance for chaining.
 	 */
-	Storage.prototype.clearCache = function(modelType) {
-		var cache = this.getCache();
+	Storage.prototype.remove = function(modelType, model) {
+		var storage;
 
 		if (modelType) {
-			delete cache[modelType.name];
+			if (model) {
+				storage = this.get(modelType);
+
+				if (typeof model === 'string') {
+					delete storage[model];
+				}
+				else {
+					delete storage[model.getKey()];
+				}
+			}
+			else {
+				storage = this.get();
+				delete storage[modelType.name];
+			}
 		}
 		else {
-			delete this._cache;
+			delete this._storage;
 		}
 
 		return this;
