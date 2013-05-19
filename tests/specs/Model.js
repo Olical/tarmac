@@ -1,5 +1,6 @@
 define([
-	'tarmac/Model'
+	'tarmac/Model',
+	'sinon'
 ], function(Model) {
 	suite('Model', function() {
 		setup(function() {
@@ -54,6 +55,13 @@ define([
 				};
 				this.model.set(value);
 				assert.deepEqual(this.model.get(), value);
+			});
+
+			test('emits the set event', function() {
+				var spy = sinon.spy();
+				this.model.addListener('set', spy);
+				this.model.set('foo', true);
+				assert.isTrue(spy.calledWith(this.model, 'foo', true));
 			});
 		});
 
