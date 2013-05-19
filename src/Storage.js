@@ -83,12 +83,13 @@ define([
 	 * @return {Object} Current instance for chaining.
 	 */
 	Storage.prototype.remove = function(modelType, model) {
-		var storage;
+		var storage = this.get();
+		var key;
 
 		if (modelType) {
-			if (model) {
-				storage = this._getModelStorage(modelType);
+			storage = this._getModelStorage(modelType);
 
+			if (model) {
 				if (typeof model === 'string') {
 					delete storage[model];
 				}
@@ -97,11 +98,22 @@ define([
 				}
 			}
 			else {
-				storage = this.get();
-				delete storage[modelType.name];
+				for (key in storage) {
+					if (storage.hasOwnProperty(key)) {
+						this.remove(storage[key]);
+					}
+				}
+
+				delete this._storage[modelType.name];
 			}
 		}
 		else {
+			for (key in storage) {
+				if (storage.hasOwnProperty(key)) {
+					this.remove(storage[key]);
+				}
+			}
+
 			delete this._storage;
 		}
 
