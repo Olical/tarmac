@@ -1,4 +1,7 @@
-define(function() {
+define([
+	'./mixin',
+	'./mixins/Events'
+], function(mixin, Events) {
 	/**
 	 * Stores and finds models. This class stores all models within the
 	 * instance so any persistence is lost when the object is destroyed. It can
@@ -9,12 +12,16 @@ define(function() {
 	 * are running within an browser.
 	 *
 	 * @class
+	 * @mixes Events
 	 */
 	function Storage() {
 	}
 
+	mixin(Storage.prototype, Events);
+
 	/**
-	 * Stores the passed model for later use.
+	 * Stores the passed model for later use. Emits the store event and passes
+	 * the current storage class, model type and target model.
 	 *
 	 * @param {Model} modelType The type of model that the target was created from.
 	 * @param {Object} target Model instance to store.
@@ -23,6 +30,7 @@ define(function() {
 	Storage.prototype.store = function(modelType, target) {
 		var storage = this._getModelStorage(modelType);
 		storage[target.getKey()] = target.get();
+		this.emitEvent('store', this, modelType, target);
 		return this;
 	};
 
