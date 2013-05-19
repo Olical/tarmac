@@ -40,7 +40,8 @@ define([
 	};
 
 	/**
-	 * Stores key/value pairs in the model.
+	 * Stores key/value pairs in the model. Emits the set event passing the
+	 * current model, key and value used in the set.
 	 *
 	 * @param {String|Object} key Either the string key to store, or an object to iterate over and store.
 	 * @param {*} [value] If your key is a string, then this is the value to be assigned to it.
