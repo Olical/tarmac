@@ -20,17 +20,17 @@ define([
 	mixin(Storage.prototype, Events);
 
 	/**
-	 * Stores the passed model for later use. Emits the store event and passes
+	 * Stores the passed model for later use. Emits the set event and passes
 	 * the current storage class, model type and target model.
 	 *
 	 * @param {Model} modelType The type of model that the target was created from.
 	 * @param {Object} target Model instance to store.
 	 * @return {Object} Current instance for chaining.
 	 */
-	Storage.prototype.store = function(modelType, target) {
+	Storage.prototype.set = function(modelType, target) {
 		var storage = this._getModelStorage(modelType);
 		storage[target.getKey()] = target.get();
-		this.emitEvent('store', this, modelType, target);
+		this.emitEvent('set', this, modelType, target);
 		return this;
 	};
 

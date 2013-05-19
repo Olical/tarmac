@@ -19,14 +19,14 @@ define([
 			});
 		});
 
-		suite('store', function() {
+		suite('set', function() {
 			test('returns current instance', function() {
-				var result = this.storage.store(this.TestModel, this.model);
+				var result = this.storage.set(this.TestModel, this.model);
 				assert.strictEqual(result, this.storage);
 			});
 
 			test('stores a model', function() {
-				this.storage.store(this.TestModel, this.model);
+				this.storage.set(this.TestModel, this.model);
 				var result = this.storage.get(this.TestModel);
 				assert.lengthOf(result, 1);
 				assert.deepEqual(result[0].get(), this.model.get());
@@ -38,8 +38,8 @@ define([
 					github: 'Wolfy87'
 				});
 
-				this.storage.store(this.TestModel, this.model);
-				this.storage.store(this.TestModel, localModel);
+				this.storage.set(this.TestModel, this.model);
+				this.storage.set(this.TestModel, localModel);
 				var result = this.storage.get(this.TestModel);
 
 				assert.lengthOf(result, 2);
@@ -47,10 +47,10 @@ define([
 				assert.deepEqual(result[1].get(), localModel.get());
 			});
 
-			test('emits the store event', function() {
+			test('emits the set event', function() {
 				var spy = sinon.spy();
-				this.storage.addListener('store', spy);
-				this.storage.store(this.TestModel, this.model);
+				this.storage.addListener('set', spy);
+				this.storage.set(this.TestModel, this.model);
 				var args = spy.args[0];
 
 				assert.strictEqual(args[0], this.storage);
@@ -77,7 +77,7 @@ define([
 			});
 			
 			test('can fetch an individual model by key (for reloading from DB etc)', function() {
-				this.storage.store(this.TestModel, this.model);
+				this.storage.set(this.TestModel, this.model);
 				var original = this.model.get();
 				var key = this.model.getKey();
 				var result = this.storage.get(this.TestModel, key);
@@ -122,8 +122,8 @@ define([
 					github: 'Wolfy87'
 				});
 
-				this.storage.store(this.TestModel, this.model);
-				this.storage.store(this.TestModel, localModel);
+				this.storage.set(this.TestModel, this.model);
+				this.storage.set(this.TestModel, localModel);
 				this.storage.remove(this.TestModel, this.model);
 				var original = localModel.get();
 				var result = this.storage.get(this.TestModel);
@@ -138,8 +138,8 @@ define([
 					github: 'Wolfy87'
 				});
 
-				this.storage.store(this.TestModel, this.model);
-				this.storage.store(this.TestModel, localModel);
+				this.storage.set(this.TestModel, this.model);
+				this.storage.set(this.TestModel, localModel);
 				var key = this.model.getKey();
 				this.storage.remove(this.TestModel, key);
 				var original = localModel.get();
