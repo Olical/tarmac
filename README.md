@@ -2,6 +2,10 @@
 
 Tiny and unopinionated AMD MVC JavaScript framework.
 
+## Status
+
+This framework is still in development at the moment. You can play with it if you want, the tests will all be passing. Things will just change rapidly and without warning. Use at your own risk!
+
 ## Tests
 
 You can run the tests by starting the server (`./scripts/server.sh`) and navigating to [http://localhost:8000/tests/](http://localhost:8000/tests/).
