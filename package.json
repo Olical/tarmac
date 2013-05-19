@@ -1,15 +1,16 @@
 {
 	"name": "tarmac",
 	"version": "0.0.0",
-	"description": "Tiny and unopinionated AMD MVC JavaScript library.",
+	"description": "Tiny and unopinionated AMD MVC JavaScript framework.",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/Wolfy87/tarmac.git"
 	},
 	"keywords": [
-		"JavaScript",
-		"AMD",
-		"MVC"
+		"amd",
+		"mvc",
+		"browser",
+		"framework"
 	],
 	"author": {
 		"name": "Oliver Caldwell",
