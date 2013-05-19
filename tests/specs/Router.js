@@ -98,6 +98,25 @@ define([
 				};
 				assert.deepEqual(this.SpyController.prototype.execute.args[0][1], request);
 			});
+
+			test('emits the route event', function() {
+				var route = '#/users/:id/:slug/';
+				var spy = sinon.spy();
+				this.router.addRoute('test', route, Controller);
+				this.router.addListener('route', spy);
+				this.router.route('#/users/100/oliver-caldwell/');
+				var request = {
+					id: '100',
+					slug: 'oliver-caldwell'
+				};
+				var args = spy.args[0];
+
+				assert.strictEqual(args[0], this.router);
+				assert.isObject(args[1]);
+				assert.instanceOf(args[2], Controller);
+				assert.deepEqual(args[3], request);
+				assert.isObject(args[4]);
+			});
 		});
 
 		suite('getContextObject', function() {
