@@ -1,6 +1,7 @@
 define([
 	'tarmac/Storage',
-	'tarmac/Model'
+	'tarmac/Model',
+	'sinon'
 ], function(Storage, Model) {
 	suite('Storage', function() {
 		setup(function() {
@@ -44,6 +45,17 @@ define([
 				assert.lengthOf(result, 2);
 				assert.deepEqual(result[0].get(), this.model.get());
 				assert.deepEqual(result[1].get(), localModel.get());
+			});
+
+			test('emits the store event', function() {
+				var spy = sinon.spy();
+				this.storage.addListener('store', spy);
+				this.storage.store(this.TestModel, this.model);
+				var args = spy.args[0];
+
+				assert.strictEqual(args[0], this.storage);
+				assert.strictEqual(args[1], this.TestModel);
+				assert.strictEqual(args[2], this.model);
 			});
 		});
 
