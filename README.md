@@ -1,6 +1,6 @@
 # Tarmac
 
-Tiny and unopinionated AMD MVC JavaScript framework.
+Tiny and unopinionated AMD MVC JavaScript framework. Available on [npm](https://npmjs.org/package/tarmac).
 
 ## Status
 
