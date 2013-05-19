@@ -43,7 +43,7 @@ define([
 				this.controller.execute('test', request, context);
 
 				assert.isTrue(spy.called);
-				assert.isTrue(spy.calledWith('test', request, context));
+				assert.isTrue(spy.calledWith(this.controller, 'test', request, context));
 			});
 		});
 	});

@@ -39,7 +39,7 @@ define([
 			this[actionHandlerName](request, context);
 		}
 
-		this.emitEvent('executed', action, request, context);
+		this.emitEvent('executed', this, action, request, context);
 		return this;
 	};
 
