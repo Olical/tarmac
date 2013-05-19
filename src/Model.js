@@ -13,6 +13,7 @@ define([
 	 *
 	 * @param {Object} data Initial data to store in the model.
 	 * @class
+	 * @mixes Events
 	 */
 	function Model(data) {
 		if (data) {

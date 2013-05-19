@@ -9,6 +9,7 @@ define([
 	 * class so your should extend it and add your own functionally.
 	 *
 	 * @class
+	 * @mixes Events
 	 */
 	function Controller() {
 	}
