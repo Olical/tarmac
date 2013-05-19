@@ -1,4 +1,7 @@
-define(function() {
+define([
+	'./mixin',
+	'./mixins/Events'
+], function(mixin, Events) {
 	/**
 	 * The router maps URLs to controllers and defines sections of the URL to
 	 * extract and place inside the request object. It can also be setup to
@@ -6,9 +9,12 @@ define(function() {
 	 * instance of storage for accessing models, for example.
 	 *
 	 * @class
+	 * @mixes Events
 	 */
 	function Router() {
 	}
+
+	mixin(Router.prototype, Events);
 
 	/**
 	 * Creates a route and maps it to a controller with an optional action. If
@@ -127,7 +133,9 @@ define(function() {
 	};
 
 	/**
-	 * Routes the provided URL through to the correct controller.
+	 * Routes the provided URL through to the correct controller. Will emit the
+	 * route event and pass the current router, selected route, controller
+	 * instance, request and context object.
 	 *
 	 * @param {String} route
 	 * @return {Object} The current instance to allow chaining.
@@ -146,6 +154,7 @@ define(function() {
 				controller = new selectedRoute.controller();
 				request = this._buildRequestObject(route, selectedRoute.route, selectedRoute.keys);
 				controller.execute(selectedRoute.action, request, context);
+				this.emitEvent('route', this, selectedRoute, controller, request, context);
 				break;
 			}
 		}
