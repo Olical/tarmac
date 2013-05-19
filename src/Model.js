@@ -1,4 +1,7 @@
-define(function() {
+define([
+	'./mixin',
+	'./mixins/Events'
+], function(mixin, Events) {
 	/**
 	 * This is where you store your data and methods to access it.
 	 *
@@ -16,6 +19,8 @@ define(function() {
 			this.set(data);
 		}
 	}
+
+	mixin(Model.prototype, Events);
 
 	/**
 	 * Retrieves a value from the model by key. If you do not pass a key then
@@ -47,6 +52,7 @@ define(function() {
 
 		if (typeof key === 'string') {
 			storage[key] = value;
+			this.emitEvent('set', this, key, value);
 		}
 		else {
 			for (i in key) {
