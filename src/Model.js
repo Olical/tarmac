@@ -30,7 +30,7 @@ define(function() {
 		if (key) {
 			return storage[key];
 		}
-		
+
 		return storage;
 	};
 
