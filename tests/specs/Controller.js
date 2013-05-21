@@ -8,27 +8,6 @@ define([
 		});
 
 		suite('execute', function() {
-			test('executes the correct action', function() {
-				this.controller.spyAction = sinon.spy();
-				this.controller.execute('spy');
-				assert.isTrue(this.controller.spyAction.called);
-			});
-
-			test('passes the request and context to the action', function() {
-				var request = {
-					type: 'request'
-				};
-				var context = {
-					type: 'context'
-				};
-
-				this.controller.spyAction = sinon.spy();
-				this.controller.execute('spy', request, context);
-				var args = this.controller.spyAction.args[0];
-				assert.strictEqual(args[0], request);
-				assert.strictEqual(args[1], context);
-			});
-
 			test('emits the executed event', function() {
 				var spy = sinon.spy();
 				var request = {
@@ -43,7 +22,28 @@ define([
 				this.controller.execute('test', request, context);
 
 				assert.isTrue(spy.called);
-				assert.isTrue(spy.calledWith(this.controller, 'test', request, context));
+				assert.isTrue(spy.calledWith('test', request, context));
+			});
+
+			test('emits the namespaced execute event that contains the action name', function() {
+				var spy = sinon.spy();
+				var uselessSpy = sinon.spy();
+				var request = {
+					name: 'oliver-caldwell',
+					github: 'Wolfy87'
+				};
+				var context = {
+					foo: true,
+					bar: false
+				};
+				this.controller.addListener('executed:test', spy);
+				this.controller.addListener('executed:otherAction', uselessSpy);
+				this.controller.execute('test', request, context);
+
+				assert.isTrue(spy.called);
+				assert.isTrue(spy.calledWith('test', request, context));
+
+				assert.isFalse(uselessSpy.called);
 			});
 		});
 	});
