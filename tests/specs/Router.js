@@ -131,7 +131,6 @@ define([
 				};
 				var args = spy.args[0];
 
-				console.log(spy);
 				assert.isTrue(spy.called);
 				assert.isObject(args[0]);
 				assert.instanceOf(args[1], Controller);

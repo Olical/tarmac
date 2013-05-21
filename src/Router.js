@@ -160,7 +160,6 @@ define([
 				controller.execute(selectedRoute.action, request, context);
 				this.emitEvent('route', selectedRoute, controller, request, context);
 				this.emitEvent('route:' + selectedRoute.name, selectedRoute, controller, request, context);
-				console.log(selectedRoute);
 				break;
 			}
 		}
