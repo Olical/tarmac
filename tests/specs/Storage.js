@@ -53,9 +53,8 @@ define([
 				this.storage.set(this.TestModel, this.model);
 				var args = spy.args[0];
 
-				assert.strictEqual(args[0], this.storage);
-				assert.strictEqual(args[1], this.TestModel);
-				assert.strictEqual(args[2], this.model);
+				assert.strictEqual(args[0], this.TestModel);
+				assert.strictEqual(args[1], this.model);
 			});
 		});
 
