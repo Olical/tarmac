@@ -21,7 +21,7 @@ define([
 
 	/**
 	 * Stores the passed model for later use. Emits the set event and passes
-	 * the current storage class, model type and target model.
+	 * the model type and the target model.
 	 *
 	 * @param {Model} modelType The type of model that the target was created from.
 	 * @param {Object} target Model instance to store.
@@ -30,7 +30,7 @@ define([
 	Storage.prototype.set = function(modelType, target) {
 		var storage = this._getModelStorage(modelType);
 		storage[target.getKey()] = target.get();
-		this.emitEvent('set', this, modelType, target);
+		this.emitEvent('set', modelType, target);
 		return this;
 	};
 

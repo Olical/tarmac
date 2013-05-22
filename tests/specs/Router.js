@@ -111,11 +111,33 @@ define([
 				};
 				var args = spy.args[0];
 
-				assert.strictEqual(args[0], this.router);
-				assert.isObject(args[1]);
-				assert.instanceOf(args[2], Controller);
-				assert.deepEqual(args[3], request);
-				assert.isObject(args[4]);
+				assert.isObject(args[0]);
+				assert.instanceOf(args[1], Controller);
+				assert.deepEqual(args[2], request);
+				assert.isObject(args[3]);
+			});
+
+			test('emits the namespaced route event that contains the route name', function() {
+				var route = '#/users/:id/:slug/';
+				var spy = sinon.spy();
+				var uselessSpy = sinon.spy();
+				this.router.addRoute('test', route, Controller);
+				this.router.addListener('route:test', spy);
+				this.router.addListener('route:otherRoute', uselessSpy);
+				this.router.route('#/users/100/oliver-caldwell/');
+				var request = {
+					id: '100',
+					slug: 'oliver-caldwell'
+				};
+				var args = spy.args[0];
+
+				assert.isTrue(spy.called);
+				assert.isObject(args[0]);
+				assert.instanceOf(args[1], Controller);
+				assert.deepEqual(args[2], request);
+				assert.isObject(args[3]);
+
+				assert.isFalse(uselessSpy.called);
 			});
 		});
 

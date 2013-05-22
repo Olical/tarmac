@@ -61,7 +61,7 @@ define([
 				var spy = sinon.spy();
 				this.model.addListener('set', spy);
 				this.model.set('foo', true);
-				assert.isTrue(spy.calledWith(this.model, 'foo', true));
+				assert.isTrue(spy.calledWith('foo', true));
 			});
 		});
 

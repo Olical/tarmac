@@ -1,6 +1,12 @@
 # Tarmac
 
-Tiny and unopinionated AMD MVC JavaScript framework. Available on [NPM](https://npmjs.org/package/tarmac) and [bower](http://bower.io/) under the name `tarmac`.
+Tiny and unopinionated AMD MVC JavaScript framework. Available on [NPM](https://npmjs.org/package/tarmac).
+
+Built to provide the base functionality required for an MVC application. This means that it assists with things like routing and storage, but needs you to implement the end result. This means it can be used on any JavaScript platform.
+
+If you want to run it in a browser you can hook the router in the hash change event and storage into localStorage. Or maybe you want your storage to fire off to the server to keep things a little safer. It's all up to you.
+
+Views and rendering should be implemented how you think is best for your specific application. Chose a templating library that matches your need at the time.
 
 ## Status
 

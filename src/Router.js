@@ -134,8 +134,12 @@ define([
 
 	/**
 	 * Routes the provided URL through to the correct controller. Will emit the
-	 * route event and pass the current router, selected route, controller
-	 * instance, request and context object.
+	 * route event and pass the selected route, controller instance, request
+	 * and context object.
+	 *
+	 * It will also emit a specific route event called route:NAME, where NAME
+	 * is the name of the matched route. This will be passed the same
+	 * arguments.
 	 *
 	 * @param {String} route
 	 * @return {Object} The current instance to allow chaining.
@@ -154,7 +158,8 @@ define([
 				controller = new selectedRoute.controller();
 				request = this._buildRequestObject(route, selectedRoute.route, selectedRoute.keys);
 				controller.execute(selectedRoute.action, request, context);
-				this.emitEvent('route', this, selectedRoute, controller, request, context);
+				this.emitEvent('route', selectedRoute, controller, request, context);
+				this.emitEvent('route:' + selectedRoute.name, selectedRoute, controller, request, context);
 				break;
 			}
 		}
