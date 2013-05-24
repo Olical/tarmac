@@ -19,10 +19,9 @@ define([
 	mixin(Router.prototype, Events);
 
 	/**
-	 * Creates a route and maps it to a controller with an optional action. If
-	 * you want to use the default controller action mapping provided by the
-	 * base controller class then you must pass an action. The action will map
-	 * to the "{{ action name }}Action" function in the controller.
+	 * Creates a route and maps it to a controller with an optional action. By
+	 * default, the action will be sent in the events emitted by the controller
+	 * on execution.
 	 *
 	 * The route URL can contain segments prefixed with a colon. These will be
 	 * extracted and sent through to the controller in the request object. For
