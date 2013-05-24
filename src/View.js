@@ -1,4 +1,6 @@
 define(function() {
+	'use strict';
+
 	/**
 	 * Should be loaded by a controller and used to render something.
 	 *

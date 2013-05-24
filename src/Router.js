@@ -2,6 +2,8 @@ define([
 	'./mixin',
 	'./mixins/Events'
 ], function(mixin, Events) {
+	'use strict';
+
 	/**
 	 * The router maps URLs to controllers and defines sections of the URL to
 	 * extract and place inside the request object. It can also be setup to

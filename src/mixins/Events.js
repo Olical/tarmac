@@ -1,4 +1,6 @@
 define(function() {
+	'use strict';
+
 	/**
 	 * Adds event capabilities to classes.
 	 *
