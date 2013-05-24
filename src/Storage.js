@@ -2,6 +2,8 @@ define([
 	'./mixin',
 	'./mixins/Events'
 ], function(mixin, Events) {
+	'use strict';
+
 	/**
 	 * Stores and finds models. This class stores all models within the
 	 * instance so any persistence is lost when the object is destroyed. It can

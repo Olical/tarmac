@@ -2,6 +2,8 @@ define([
 	'./mixin',
 	'./mixins/Events'
 ], function(mixin, Events) {
+	'use strict';
+
 	/**
 	 * Controllers are instantiated by the router and emit events when routed
 	 * to. This class should handle the required models and views to render the

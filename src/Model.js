@@ -2,6 +2,8 @@ define([
 	'./mixin',
 	'./mixins/Events'
 ], function(mixin, Events) {
+	'use strict';
+
 	/**
 	 * This is where you store your data and methods to access it.
 	 *

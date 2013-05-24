@@ -1,4 +1,6 @@
 define(function() {
+	'use strict';
+
 	/**
 	 * Mixes all passed objects into the leftmost object. The leftmost objects
 	 * have higher precedence and will overwrite values set by the rightmost
