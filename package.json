@@ -1,6 +1,6 @@
 {
 	"name": "tarmac",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Tiny and unopinionated AMD MVC JavaScript framework.",
 	"repository": {
 		"type": "git",
