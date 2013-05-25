@@ -45,6 +45,24 @@ define([
 
 				assert.isFalse(uselessSpy.called);
 			});
+
+			test('sets the current object', function() {
+				var request = {
+					name: 'oliver-caldwell',
+					github: 'Wolfy87'
+				};
+				var context = {
+					foo: true,
+					bar: false
+				};
+				this.controller.execute('test', request, context);
+				var current = this.controller.current;
+
+				assert.isObject(current);
+				assert.strictEqual(current.action, 'test');
+				assert.strictEqual(current.request, request);
+				assert.strictEqual(current.context, context);
+			});
 		});
 	});
 });
