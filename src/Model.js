@@ -108,12 +108,24 @@ define([
 	Model.prototype._generateKey = function() {
 		var time = Date.now();
 		var randomSalt = Math.floor(Math.random() * 20001) - 10000;
-		var keyCharacters = btoa(time + randomSalt).split('');
+		var keyCharacters = btoa(time + randomSalt + this._getSalt()).split('');
 		keyCharacters.sort(function() {
 			return 0.5 - Math.random();
 		});
 
 		return keyCharacters.join('');
+	};
+
+	/**
+	 * By default will just return an arbitrary string to add to the key salt
+	 * each time one is generated. You can return a custom value here to ensure
+	 * uniqueness. Probably a value extracted from the model.
+	 *
+	 * @return {String}
+	 * @private
+	 */
+	Model.prototype._getSalt = function() {
+		return 'salt123';
 	};
 
 	return Model;

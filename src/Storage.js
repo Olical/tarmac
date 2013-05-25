@@ -33,6 +33,7 @@ define([
 		var storage = this._getModelStorage(modelType);
 		storage[target.getKey()] = target.get();
 		this.emitEvent('set', modelType, target);
+		this.emitEvent('change');
 		return this;
 	};
 
@@ -106,6 +107,8 @@ define([
 		else {
 			delete this._storage;
 		}
+
+		this.emitEvent('change');
 
 		return this;
 	};
