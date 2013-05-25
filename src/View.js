@@ -1,4 +1,7 @@
-define(function() {
+define([
+	'./mixin',
+	'./mixins/Events'
+], function(mixin, Events) {
 	'use strict';
 
 	/**
@@ -7,9 +10,12 @@ define(function() {
 	 * So very abstract. Go wild.
 	 *
 	 * @class
+	 * @mixins Events
 	 */
 	function View() {
 	}
+
+	mixin(View.prototype, Events);
 
 	/**
 	 * This function should perform the final render of the view. If you are
