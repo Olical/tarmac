@@ -10,6 +10,7 @@ define([
 	 * result. This is pretty much an abstract class so your should extend it
 	 * and add your own functionally.
 	 *
+	 * @param {Object} context Object of information that can be passed down from the router.
 	 * @class
 	 * @mixes Events
 	 */

@@ -156,7 +156,7 @@ define([
 		for (key in routes) {
 			if (routes.hasOwnProperty(key) && routes[key].route.test(route)) {
 				selectedRoute = routes[key];
-				controller = new selectedRoute.controller();
+				controller = new selectedRoute.controller(context);
 				request = this._buildRequestObject(route, selectedRoute.route, selectedRoute.keys);
 				controller.execute(selectedRoute.action, request, context);
 				this.emitEvent('route', selectedRoute, controller, request, context);
